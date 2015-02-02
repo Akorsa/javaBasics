@@ -1,0 +1,65 @@
+будет ли компилироваться
+
+1) byte b = 100 ?
+
+2) byte b = 100L ?
+
+3) int i = 100L ?
+
+если нет, то как исправить?
+
+
+
+
+Решение (согласно параграфу "A Closer Look at Literals" книги Шилдта).
+
+
+До привлечения программных средств:
+
+1) Литеральная запись "100" представляется типом int, но
+т.к. значение "100" попадает в диапазон byte (-128...127),
+произойдет автоконвертация и сообщения об ошибке не будет.
+
+2) Для литеральной записи long аналогично: 100 попадает в диапазон byte.
+
+3) То же самое
+
+
+
+
+После привлечения программных средств:
+
+1) Литеральная запись "100" представляется типом int, но
+т.к. значение "100" попадает в диапазон byte (-128...127),
+произойдет автоконвертация и сообщения об ошибке не будет.
+
+2) Автоконвертация касается только литеральной записи без постфиксов,
+   т.е. только для типа int.
+   Для long придется делать кастинг:
+
+   byte b = (byte) 100L;
+
+3) То же, что в п.2:
+
+   int i = (int) 100L;
+
+
+Сбило с толку последнее предложение абзаца, интерпретируемое мной как
+"An integer can also be assigned to a char as long..."
+(целое может быть присвоено к char'у как long)
+Надо лучше высыпаться :)))
+
+
+Цитата:
+
+Integer literals create an int value, which in Java is a 32-bit integer value. 
+Since Java is strongly typed, you might be wondering how it is possible to 
+assign an integer literal to one of Java’s other integer types, such as byte or long, 
+without causing a type mismatch error. Fortunately, such situations are easily handled. 
+When a literal value is assigned to a byte or short variable, no error is generated 
+if the literal value is within the range of the target type. An integer literal 
+can always be assigned to a long variable. However, to specify a long literal, 
+you will need to explicitly tell the compiler that the literal value is of type long. 
+You do this by appending an upper- or lowercase L to the literal. For example, 
+0x7ffffffffffffffL or 9223372036854775807L is the largest long. An integer 
+can also be assigned to a char as long as it is within range.
